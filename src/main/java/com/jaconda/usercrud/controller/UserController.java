@@ -3,9 +3,7 @@ package com.jaconda.usercrud.controller;
 import com.jaconda.usercrud.dto.UserDTO;
 import com.jaconda.usercrud.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,10 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDTO> read(UserDTO userDTO){
         return userService.read(userDTO);
+    }
+
+    @PostMapping("/users")
+    public UserDTO create(@RequestBody UserDTO userDTO){
+        return userService.create(userDTO);
     }
 }
