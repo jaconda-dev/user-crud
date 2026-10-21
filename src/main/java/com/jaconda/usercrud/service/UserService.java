@@ -41,4 +41,12 @@ public class UserService {
 
         return userMapper.userDTO(userSaved);
     }
+
+    public void delete(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()){
+            throw new IllegalStateException("Пользователя с данным id не существует");
+        }
+        userRepository.deleteById(id);
+    }
 }
