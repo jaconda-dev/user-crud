@@ -1,6 +1,7 @@
 package com.jaconda.usercrud.controller;
 
 import com.jaconda.usercrud.dto.UserDTO;
+import com.jaconda.usercrud.dto.UserUpdateDTO;
 import com.jaconda.usercrud.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         userService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable(name = "id") Long id, @RequestBody UserUpdateDTO userUpdateDTO){
+        userService.update(id, userUpdateDTO);
     }
 }

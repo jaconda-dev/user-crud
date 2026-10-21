@@ -1,9 +1,11 @@
 package com.jaconda.usercrud.service;
 
 import com.jaconda.usercrud.dto.UserDTO;
+import com.jaconda.usercrud.dto.UserUpdateDTO;
 import com.jaconda.usercrud.mapper.UserMapper;
 import com.jaconda.usercrud.model.User;
 import com.jaconda.usercrud.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +50,29 @@ public class UserService {
             throw new IllegalStateException("Пользователя с данным id не существует");
         }
         userRepository.deleteById(id);
+    }
+
+   @Transactional
+    public void update(Long id, UserUpdateDTO userUpdateDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()){
+            throw new IllegalStateException("Пользователя с данным id: " + id + " не существует");
+        }
+
+        User user = optionalUser.get();
+
+        if(userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().equals(user.getEmail())){
+            Optional<User> foundByEmail = userRepository.findByEmail(userUpdateDTO.getEmail());
+            if (foundByEmail.isPresent()){
+                throw new IllegalStateException("Данная почта занята другим пользователем!");
+            }
+            user.setEmail(userUpdateDTO.getEmail());
+        }
+
+        if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().equals(user.getName())){
+            user.setName(userUpdateDTO.getName());
+        }
+
+        //userRepository.save(user);
     }
 }
