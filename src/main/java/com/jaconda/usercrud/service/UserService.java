@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<UserDTO> read(UserDTO userDTO){
+    public List<UserDTO> read(){
         List<User> users = userRepository.findAll();
         if(users.isEmpty()){
             throw new RuntimeException("Список пользователей пуст");
