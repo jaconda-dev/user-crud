@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    User findByEmail(String email);
 
     //JPQL нативный запрос
-//    @Query(value = "select u from users u where u.email = :email")
+//    @Query(value = "select u from user u where u.email = :email")
 //    User findByEmail(String email);
 
     Optional<User> findByEmail(String email);
