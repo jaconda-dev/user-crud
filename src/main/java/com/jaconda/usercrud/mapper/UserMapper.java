@@ -4,6 +4,7 @@ import com.jaconda.usercrud.dto.UserDTO;
 import com.jaconda.usercrud.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

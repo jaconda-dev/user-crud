@@ -6,6 +6,8 @@ import com.jaconda.usercrud.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,11 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public UserDTO create(@Valid @RequestBody UserDTO userDTO){
-        return userService.create(userDTO);
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO){
+
+        UserDTO createdUser = userService.create(userDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @DeleteMapping("/{id}")
