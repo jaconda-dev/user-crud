@@ -22,8 +22,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<UserDTO> read(){
-        return userService.read();
+    public ResponseEntity<List<UserDTO>> read(){
+        List<UserDTO> readUser = userService.read();
+        return ResponseEntity.status(HttpStatus.OK).body(readUser);
     }
 
     @PostMapping("/users")
@@ -35,19 +36,21 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @PathVariable
             @Min(value = 1, message = "ID должен быть больше 0")
             Long id){
         userService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
-    public void update(
+    public ResponseEntity<Void> update(
             @PathVariable(name = "id")
             @Min(value = 1, message = "ID должен быть больше 0")
             Long id,
             @Valid @RequestBody UserUpdateDTO userUpdateDTO){
         userService.update(id, userUpdateDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

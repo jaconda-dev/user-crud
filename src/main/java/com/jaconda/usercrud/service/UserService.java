@@ -34,7 +34,7 @@ public class UserService {
     public UserDTO create(UserDTO userDTO) {
         userRepository.findByEmail(userDTO.getEmail())
                 .ifPresent(existingUser -> {
-                    throw new CustomException("Пользователь с данной почтой уже существует");
+                    throw new CustomException("Пользователь с почтой " + userDTO.getEmail() + " уже существует");
                 });
 
 //      2-й способ проверки:
@@ -55,7 +55,7 @@ public class UserService {
     @Transactional //опционально
     public void delete(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        optionalUser.orElseThrow(() -> new CustomException("Пользователя с данным id не существует"));
+        optionalUser.orElseThrow(() -> new CustomException("Пользователя с данным id: " + id + " не существует"));
 
 //        2-ой способ проверки
 //        if (optionalUser.isEmpty()){
@@ -79,7 +79,7 @@ public class UserService {
         if(userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().equals(user.getEmail())){
             Optional<User> foundByEmail = userRepository.findByEmail(userUpdateDTO.getEmail());
             if (foundByEmail.isPresent()){
-                throw new IllegalStateException("Данная почта занята другим пользователем!");
+                throw new IllegalStateException("Данная почта " + userUpdateDTO.getEmail() + " занята другим пользователем!");
             }
             user.setEmail(userUpdateDTO.getEmail());
         }
