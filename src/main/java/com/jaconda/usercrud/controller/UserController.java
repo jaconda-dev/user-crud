@@ -3,12 +3,18 @@ package com.jaconda.usercrud.controller;
 import com.jaconda.usercrud.dto.UserDTO;
 import com.jaconda.usercrud.dto.UserUpdateDTO;
 import com.jaconda.usercrud.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
@@ -16,22 +22,35 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<UserDTO> read(UserDTO userDTO){
-        return userService.read(userDTO);
+    public ResponseEntity<List<UserDTO>> read(){
+        List<UserDTO> readUser = userService.read();
+        return ResponseEntity.status(HttpStatus.OK).body(readUser);
     }
 
     @PostMapping("/users")
-    public UserDTO create(@RequestBody UserDTO userDTO){
-        return userService.create(userDTO);
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO){
+
+        UserDTO createdUser = userService.create(userDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(
+            @PathVariable
+            @Min(value = 1, message = "ID должен быть больше 0")
+            Long id){
         userService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable(name = "id") Long id, @RequestBody UserUpdateDTO userUpdateDTO){
+    public ResponseEntity<Void> update(
+            @PathVariable(name = "id")
+            @Min(value = 1, message = "ID должен быть больше 0")
+            Long id,
+            @Valid @RequestBody UserUpdateDTO userUpdateDTO){
         userService.update(id, userUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
