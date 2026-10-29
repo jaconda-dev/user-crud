@@ -41,7 +41,7 @@ public class UserController {
             @Min(value = 1, message = "ID должен быть больше 0")
             Long id){
         userService.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{id}")
@@ -51,6 +51,6 @@ public class UserController {
             Long id,
             @Valid @RequestBody UserUpdateDTO userUpdateDTO){
         userService.update(id, userUpdateDTO);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
